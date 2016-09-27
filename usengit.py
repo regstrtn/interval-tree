@@ -1,5 +1,5 @@
 from __future__ import print_function
-import ngit
+import itree
 import os 
 import sys
 import pprint
@@ -15,7 +15,12 @@ for line in f:
 	
 #print(a)
 
+mytree = itree.itree(a, 1679, 1998)
+mytree.traverse()
+
+'''
 myTree = ngit.intervalTree(a, 0, 1, 1679, 1998)
 myTree.pprint(6)
 r = [1800, 1900]
 print(myTree.findRange(r))
+'''
