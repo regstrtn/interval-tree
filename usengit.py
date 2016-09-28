@@ -3,6 +3,7 @@ import itree
 import os 
 import sys
 import pprint
+import pgraph
 
 f = open("a.txt", "r")
 a = []
@@ -14,9 +15,10 @@ for line in f:
 	a.append(b)
 	
 #print(a)
-
 mytree = itree.itree(a, 1679, 1998)
 mytree.traverse()
+
+pgraph.printtree(mytree)
 
 '''
 myTree = ngit.intervalTree(a, 0, 1, 1679, 1998)
