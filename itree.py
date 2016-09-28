@@ -37,30 +37,59 @@ class itree:
         left = intervals[:mid]
         right = intervals[mid+1:]
         midval = intervals[mid]
-        
-        tnode = node(midval, None, None)
-        
-        if(len(left)>1):
-            self.buildtree(left, tnode.l)
-        elif len(left)==1:
-            tnode.l = node(left[0], None, None)
-        
-        if(len(right)>1):
-            self.buildtree(right, tnode.r)
-        elif(len(right)==1):
-            tnode.r = node(right[0], None, None)
-        
+                
         if(self.root is None):
-            self.root = tnode
-            self.root.l = tnode.l
-            self.root.r = tnode.r
+            self.root = node(midval, None, None)
+            self.buildtree(left, self.root.l)
+            self.buildtree(right, self.root.r)
+        else:
+            tnode = node(midval, None, None)
+
+            if(len(left)>1):
+                self.buildtree(left, tnode.l)
+            elif len(left)==1:
+                tnode.l = node(left[0], None, None)
+        
+            if(len(right)>1):
+                self.buildtree(right, tnode.r)
+            elif(len(right)==1):
+                tnode.r = node(right[0], None, None)
     
-    def inorder(self, node):
-        if(node is None):
+    def add(self, intervals):
+        mid = len(intervals)//2
+        
+        if(self.root == None):
+            self.root = node(midval, None, None)
+        else:
+            self._add(intervals, self.root)
+
+    def _add(self, intervals, node):
+        mid = len(intervals)//2
+        left = intervals[:mid]
+        right = intervals[mid+1:]
+        midval = intervals[mid]
+        
+
+        if(len(left)>1):
+            if(node.l != None):
+                self._add(left, node.l)
+            else:
+                node.l = Node(val)
+        else:
+            if(node.r != None):
+                self._add(val, node.r)
+            else:
+                node.r = Node(val)
+
+    def inorder(self, rootnode):
+        '''
+        inorder traversal of the 
+        '''
+        if(rootnode is None):
             return
-        self.inorder(node.l)
-        print(node.val)
-        self.inorder(node.r)
+        self.inorder(rootnode.l)
+        print(rootnode.val)
+        self.inorder(rootnode.r)
         
     def traverse(self):
         self.inorder(self.root)
