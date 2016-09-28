@@ -12,7 +12,7 @@ class node:
     
     def appenddata(self, data):
         print(data)
-        self.data.extend(data)
+        self.data.append(data)
 
 class itree:
     def __init__(self, data, start, end):
@@ -56,17 +56,22 @@ class itree:
             #if leftspan is completely contained in the interval spanned by the label
             #store label in left child of node
             if(self.spanininterval(leftspan, labelinterval)):
-                if(node.l is not None):
-                    node.l.appenddata(label)
+                #if(node.l is not None):
+                    print("Inserted label ",label," in ",node.val)
+                    node.appenddata(label)
+            
             #if the two intervals overlap, then recurse lower down the tree
             elif (self.isoverlap(leftspan, labelinterval)):
+                #print("Leftspan", leftspan, "labelinterval", labelinterval, label, "Value of node.l", node.l.val)
                 self._insertdata(node.l, labelinterval, label, start, node.val)
 
             if(self.spanininterval(rightspan, labelinterval)):
-                if(node.r is not None):
+                #if(node.r is not None):
+                    print("Inserted label ",label," in ",node.val)
                     node.r.appenddata(label)
             elif (self.isoverlap(rightspan, labelinterval)):
-                self._insertdata(node.r, labelinterval, label, node.val, end)    
+                #print("Leftspan", leftspan, "labelinterval", labelinterval, label, "Value of node.l", node.l.val)
+                self._insertdata(node.r, labelinterval, label, node.val, end)
 
 
     def insertdata(self, node, data, start, end):
@@ -76,7 +81,7 @@ class itree:
         """
         for item in data:
             iteminterval = [item[0], item[1]]
-            itemlabel = item[-1]
+            itemlabel = str(item[-1])
             self._insertdata(node, iteminterval, itemlabel, start, end)
 
     def buildtree(self, intervals):
@@ -88,16 +93,16 @@ class itree:
         right = intervals[mid+1:]
         midval = intervals[mid]
 
-        n = node(midval, node(-1, None, None), node(-1, None, None))
+        n = node(midval, node(-1, None, None), node(-2, None, None))
         if(len(left)>1):
             n.l = self.buildtree(left)
         elif len(left)==1:
-            n.l = node(left[0], node(-1, None, None), node(-1, None, None))
+            n.l = node(left[0], node(-1, None, None), node(-2, None, None))
     
         if(len(right)>1):
             n.r = self.buildtree(right)
         elif(len(right)==1):
-            n.r = node(right[0], node(-1, None, None), node(-1, None, None))
+            n.r = node(right[0], node(-1, None, None), node(-2, None, None))
         return n
 
     def inorder(self, rootnode):
