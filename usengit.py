@@ -4,19 +4,29 @@ import os
 import sys
 import pprint
 import pgraph
+import csv
 
-f = open("a.txt", "r")
-a = []
-for line in f:
-	b = []
-	b.append(int(line.split()[0]))
-	b.append(int(line.split()[1]))
-	b.append(line.split()[2])
-	a.append(b)
-	
+
+fbcsv = open("b.csv", "r")
+
+composers = csv.reader(fbcsv, delimiter = ",", quotechar = '"')
+data = []
+
+for row in composers:
+	life = []
+	#print(row[2].split("-")[1])
+	life.append(int(row[2].split("-")[0]))
+	life.append(int(row[2].split("-")[1]))
+	life.append(row[1])
+	data.append(life)
+
+print(data)
+
+a = data
 #print(a)
 mytree = itree.itree(a, 1679, 1998)
 mytree.traverse()
+mytree.findrange(1790, 1800)
 
 pgraph.printtree(mytree)
 

@@ -100,6 +100,29 @@ class itree:
         elif(len(right)==1):
             n.r = node(right[0], node(-1, None, None), node(-1, None, None))
         return n
+    
+    def _findrange(self, node, start, end, queryrange):
+        overlaps = []
+        if(node is None):
+            return overlaps
+        leftspan = (start, node.val)
+        rightspan = (node.val, end)
+        if(self.isoverlap(leftspan, queryrange)):
+            overlaps.extend(node.data)
+            if(node.l is not None):
+                overlaps.extend(self._findrange(node.l, start, node.val, queryrange))
+
+        if(self.isoverlap(rightspan, queryrange)):
+            overlaps.extend(node.data)
+            if(node.r is not None):
+                overlaps.extend(self._findrange(node.r, node.val, end, queryrange))
+
+        return list(set(overlaps))
+
+
+    def findrange(self, querystart, queryend):
+        overlaps = self._findrange(self.root, self.start, self.end, [querystart, queryend])
+        print(overlaps)
 
     def inorder(self, rootnode):
         '''
@@ -110,6 +133,7 @@ class itree:
         self.inorder(rootnode.l)
         print(rootnode.val, rootnode.data)
         self.inorder(rootnode.r)
-        
+                
+
     def traverse(self):
         self.inorder(self.root)
