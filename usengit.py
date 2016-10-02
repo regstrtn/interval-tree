@@ -5,6 +5,7 @@ import sys
 import pprint
 import pgraph
 import csv
+from igraph import igraph
 
 
 fbcsv = open("b.csv", "r")
@@ -26,9 +27,13 @@ a = data
 #print(a)
 mytree = itree.itree(a, 1679, 1998)
 mytree.traverse()
-mytree.findrange(1790, 1800)
-
+overlaps = mytree.findrange(1895, 1957)
+print(overlaps)
 pgraph.printtree(mytree)
+
+#Test igraph module
+g = igraph(mytree, a)
+
 
 '''
 myTree = ngit.intervalTree(a, 0, 1, 1679, 1998)

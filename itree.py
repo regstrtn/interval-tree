@@ -108,11 +108,13 @@ class itree:
         leftspan = (start, node.val)
         rightspan = (node.val, end)
         if(self.isoverlap(leftspan, queryrange)):
+            print("Overlaps with ", node.data)
             overlaps.extend(node.data)
             if(node.l is not None):
                 overlaps.extend(self._findrange(node.l, start, node.val, queryrange))
 
         if(self.isoverlap(rightspan, queryrange)):
+            print("Overlaps with ", node.data, node.val)
             overlaps.extend(node.data)
             if(node.r is not None):
                 overlaps.extend(self._findrange(node.r, node.val, end, queryrange))
@@ -122,7 +124,11 @@ class itree:
 
     def findrange(self, querystart, queryend):
         overlaps = self._findrange(self.root, self.start, self.end, [querystart, queryend])
-        print(overlaps)
+        return overlaps
+
+    def composeroverlap(self, composer, data):
+        overlaps = self._findrange(self.root, self.start, self.end, [data[0], data[1]])
+        return overlaps
 
     def inorder(self, rootnode):
         '''
