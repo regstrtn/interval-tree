@@ -33,6 +33,7 @@ pgraph.printtree(mytree)
 
 #Test igraph module
 g = igraph(mytree, a)
+g.printdotfile()
 
 
 '''
