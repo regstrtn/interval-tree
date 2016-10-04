@@ -22,7 +22,7 @@ def printlines(f, root):
 		linestr += "->"
 		linestr += str(root.l.val)
 		#if(len(root.l.data)>0):
-		linestr = linestr+'[label="'+str(root.l.val)+" ".join(root.l.data)+'"]\n;'
+		linestr = linestr+'[label="'+" ".join(root.l.data)+'"]\n;'
 		f.write(linestr)
 	if(root.r is not None):
 		linestr = ""
@@ -30,7 +30,7 @@ def printlines(f, root):
 		linestr += "->"
 		linestr += str(root.r.val)
 		#if(len(root.r.data)>0):
-		linestr = linestr+'[label="'+str(root.r.val)+" ".join(root.r.data)+'"]\n;'
+		linestr = linestr+'[label="'+" ".join(root.r.data)+'"]\n;'
 		f.write(linestr)
 	printlines(f, root.l)
 	printlines(f, root.r)

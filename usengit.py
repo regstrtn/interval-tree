@@ -9,8 +9,10 @@ from igraph import igraph
 
 
 fbcsv = open("b.csv", "r")
+fbcsv.readline()
 
-composers = csv.reader(fbcsv, delimiter = ",", quotechar = '"')
+#Read csv file after ignoring the first line
+composers = csv.reader(fbcsv, delimiter = ",", quotechar = '"', quoting=csv.QUOTE_ALL, skipinitialspace=True)
 data = []
 
 for row in composers:
@@ -23,12 +25,20 @@ for row in composers:
 
 print(data)
 
+#Construct tree
 a = data
-#print(a)
-mytree = itree.itree(a, 1679, 1998)
+mytree = itree.itree(a)
 mytree.traverse()
+
+#Print composer Overlap
 overlaps = mytree.findrange(1895, 1957)
 print(overlaps)
+
+#Print Songs
+fbcsv.seek(0); fbcsv.readline()
+mytree.findsongs(1895, 1957,composers)
+
+#Output tree dot file
 pgraph.printtree(mytree)
 
 #Test igraph module

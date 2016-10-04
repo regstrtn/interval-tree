@@ -123,7 +123,12 @@ class igraph:
 		'''	
 		f = open("myg.dot", "w")
 		f.write("graph G {")
-		for edge in self.edgelist:
-			linestr = edge[0]+"--"+edge[1]+"\n"
-			f.write(linestr)
+		for s in self._graph:
+			if(len(self._graph[s])==0):
+					linestr = s
+					f.write(linestr+"\n")
+			else:					
+				for edge in self._graph[s]:
+					linestr = edge[0]+"--"+edge[1]+"\n"
+					f.write(linestr)
 		f.write("}")

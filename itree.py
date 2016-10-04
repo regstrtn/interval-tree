@@ -18,13 +18,12 @@ class node:
         self.data.append(data)
 
 class itree:
-    def __init__(self, data, start, end):
-        self.start = start
-        self.end = end
-        
+    def __init__(self, data):
         self.intervals = self.getintervals(data)
+        self.start = 0
+        self.end = self.intervals[-1]
         self.root = self.buildtree(self.intervals)
-        self.insertdata(self.root, data, start, end)
+        self.insertdata(self.root, data, self.start, self.end)
         
     def getintervals(self, data):
         #collect all endpoints and sort them to get list of elementary intervals
@@ -108,13 +107,13 @@ class itree:
         leftspan = (start, node.val)
         rightspan = (node.val, end)
         if(self.isoverlap(leftspan, queryrange)):
-            print("Overlaps with ", node.data)
+            #print("Overlaps with ", node.data)
             overlaps.extend(node.data)
             if(node.l is not None):
                 overlaps.extend(self._findrange(node.l, start, node.val, queryrange))
 
         if(self.isoverlap(rightspan, queryrange)):
-            print("Overlaps with ", node.data, node.val)
+            #print("Overlaps with ", node.data, node.val)
             overlaps.extend(node.data)
             if(node.r is not None):
                 overlaps.extend(self._findrange(node.r, node.val, end, queryrange))
@@ -140,6 +139,18 @@ class itree:
         print(rootnode.val, rootnode.data)
         self.inorder(rootnode.r)
                 
+    def findsongs(self,querystart, queryend, composers):
+        overlaps = self._findrange(self.root, self.start, self.end, [querystart, queryend])
+        datadict = {}
+        for row in composers:
+            row = [i.replace('N.A.', '') for i in row]
+            datadict[row[1]] = [row[3], row[4], row[5], row[6]]
+        
+        songs = [datadict[x] for x in overlaps]
+        print("Genre: Songs")
+        for i in range(0, 4):
+            print(i+1, ": ",[s[i] for s in songs])
+
 
     def traverse(self):
         self.inorder(self.root)
