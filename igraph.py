@@ -13,8 +13,9 @@ class igraph:
 		self._graph = defaultdict(set)
 		self.buildedgelist(mytree, composers)
 		self.getallvertices(composers)
-		self.isclique(self.edgelist)
-
+		#pprint(self._graph)
+		self.getmaxclique()
+		self.getlcc()
 
 	def getoverlappingcomposers(self, mytree, composer):
 		overlaps = mytree.findrange(composer[0], composer[1])
@@ -27,10 +28,12 @@ class igraph:
 			for item in overlaps:
 				edgetuple = (composer[-1], item)
 				b = edgetuple[::-1]
+				if(b[0]!=b[1]):
+					self._graph[composer[-1]].add(edgetuple)
+					self._graph[item].add(b)
 				if (b not in self.edgelist and b[0]!=b[1]):
 					self.edgelist.append(edgetuple)
-		pprint(self.edgelist)
-
+		
 	def getvertices(self, edgelist):
 		v = []
 		for edge in edgelist:
@@ -43,25 +46,38 @@ class igraph:
 		for composer in composers:
 			v.append(composer[-1])
 		self.vertexlist = set(v)
-		print(self.vertexlist)
 
 	def getmaxclique(self):
+		size = len(self._graph.keys())
+		alist = [' C1', ' C2']
+		for i in range(size+1, 1, -1):
+			keysubset = self.k_subsets(self._graph.keys(), i)
+			for klist in keysubset:
+				subgraph = {}
+				for k in klist:
+					subgraph[k] = self._graph[k]
+				if(self.isclique(subgraph)):
+					print("Largest clique size: ",len(subgraph.keys()))
+					print("Elements in the clique: ",subgraph.keys())
+					return
+			#subgraph = {k: self._graph[k] for k in alist} 
 		pass
 
 	def getsubsets(self):
+		
 		pass
 
-	def isclique(self, edgelist):
+	def isclique(self, subgraph):
 		#get list of vertices
 		#check if each edge is present
-		vlist = self.getvertices(edgelist)
+		vlist = subgraph.keys()
 		alledges = self.k_subsets(list(vlist), 2)
 		alltuples = []
 		for t in alledges:	
 			alltuples.append(tuple(t))
 		for t in alltuples:
 			reverset = t[::-1]
-			if(t not in edgelist and reverset not in edgelist): 
+			if(t not in subgraph[t[0]] and reverset not in subgraph[t[1]]): 
 				return(False)
 		return(True)
 	
@@ -75,7 +91,32 @@ class igraph:
 		return self.k_subsets(lst[1:], k) + [[lst[0]]+x for x in self.k_subsets(lst[1:], k-1)]
 		#return self.k_subsets(lst[1:],k) + map(lambda x:x+[lst[0]],self.k_subsets(lst[1:], k-1))
 
+	def getlcc(self):
+		sizecc = 0
+		cc = []
+		v = set(self.vertexlist)
+		while v:
+			path = self.dfs(v.pop())
+			cc.append(path)
+			for p in path:				
+				v.discard(p)
+		sizecc = [len(x) for x in cc]
+		maxsize = max(sizecc)
+		print(self.vertexlist)
+		for c in cc:
+			if(len(c) == maxsize):
+				print("Largest connected component: ",c)
 
+	def dfs(self, start, path = []):
+		q = [start]
+		while q:
+			v = q.pop(0)
+			if v not in path:
+				path = path+[v]
+				q = [x[1] for x in self._graph[v]]+q
+		return path
+
+	
 	def printdotfile(self):
 		'''
 		Run this to make graph: dot -Tps myg.dot -o graph1.ps
