@@ -5,24 +5,31 @@ from pprint import pprint
 from itree import itree
 from collections import defaultdict
 
+#Turn this flag 1 to print debugging information
+debug = 0
+def dg(param):
+	if(debug ==1):
+		pprint(param)
 
 class igraph:
 	def __init__(self, mytree, composers):
 		self.edgelist = []
 		self.vertexlist = set()
 		self._graph = defaultdict(set)
-		self.buildedgelist(mytree, composers)
 		self.getallvertices(composers)
+		self.buildedgelist(mytree, composers)
 		#pprint(self._graph)
-		self.getmaxclique()
-		self.getlcc()
+		#self.getmaxclique()
+		#self.getlcc()
 
 	def getoverlappingcomposers(self, mytree, composer):
 		#Return all composers overlapping with given composer
 		overlaps = mytree.findrange(composer[0], composer[1])
+		dg([composer[0], composer[1], overlaps])
 		return overlaps
 
 	def buildedgelist(self, mytree, composers):
+		#Get all edges for the interval graph
 		self.edgelist = []
 		for composer in composers:
 			overlaps = self.getoverlappingcomposers(mytree, composer)
@@ -48,7 +55,10 @@ class igraph:
 		v = []
 		for composer in composers:
 			v.append(composer[-1])
-		self.vertexlist = set(v)
+		setv = set(v)
+		for vertex in setv:
+			self._graph[vertex] = set()
+		self.vertexlist = setv
 
 	def getmaxclique(self):
 		#Find largest clique in the graph
@@ -108,7 +118,7 @@ class igraph:
 				v.discard(p)
 		sizecc = [len(x) for x in cc]
 		maxsize = max(sizecc)
-		print(self.vertexlist)
+		#print(self.vertexlist)
 		for c in cc:
 			if(len(c) == maxsize):
 				print("Largest connected component: ",c)
@@ -134,9 +144,9 @@ class igraph:
 		for s in self._graph:
 			if(len(self._graph[s])==0):
 					linestr = s
-					f.write(linestr+"\n")
-			else:					
-				for edge in self._graph[s]:
-					linestr = edge[0]+"--"+edge[1]+"\n"
-					f.write(linestr)
+					f.write(linestr+";\n")
+
+		for edge in self.edgelist:
+			linestr = edge[0]+"--"+edge[1]+";\n"
+			f.write(linestr)
 		f.write("}")

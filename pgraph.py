@@ -17,20 +17,23 @@ def printlines(f, root):
 	lines = []
 	if(root is None): return
 	if(root.l is not None):
-		linestr = ""
+		linestr = ""; 
 		linestr += str(root.val)
 		linestr += "->"
 		linestr += str(root.l.val)
-		#if(len(root.l.data)>0):
-		linestr = linestr+'[label="'+" ".join(root.l.data)+'"]\n;'
+		linestr = linestr+';\n'
+		linestr += str(root.val)+'[label="'+str(root.val)+" "+" ".join(root.data)+'"];\n'
+		linestr += str(root.l.val)+'[label="'+str(root.l.val)+" "+" ".join(root.l.data)+'"];\n'
+
 		f.write(linestr)
 	if(root.r is not None):
-		linestr = ""
+		linestr = ""; 
 		linestr += str(root.val)
 		linestr += "->"
 		linestr += str(root.r.val)
-		#if(len(root.r.data)>0):
-		linestr = linestr+'[label="'+" ".join(root.r.data)+'"]\n;'
+		linestr = linestr+';\n'
+		linestr += str(root.val)+'[label="'+str(root.val)+" "+" ".join(root.data)+'"];\n'
+		linestr += str(root.r.val)+'[label="'+str(root.r.val)+" "+" ".join(root.r.data)+'"];\n'
 		f.write(linestr)
 	printlines(f, root.l)
 	printlines(f, root.r)

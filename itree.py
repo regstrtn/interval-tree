@@ -4,6 +4,10 @@ import sys
 import pprint
 from collections import defaultdict
 
+'''
+With ideas taken from Wikipedia, StackOverflow and NextGenetics blog
+'''
+
 class node:
     leaves = 0
     def __init__(self, val, left, right):
@@ -58,7 +62,7 @@ class itree:
             #if leftspan is completely contained in the interval spanned by the label
             #store label in left child of node
             if(self.spanininterval(leftspan, labelinterval)):
-                    node.appenddata(label)
+                    node.l.appenddata(label)
             
             #if the two intervals overlap, then recurse lower down the tree
             elif (self.isoverlap(leftspan, labelinterval)):
@@ -102,19 +106,23 @@ class itree:
         return n
     
     def _findrange(self, node, start, end, queryrange):
+        if(queryrange[0]<self.start or queryrange[1]>self.end):
+            print("Interval out of range")
+            return
+
         overlaps = []
         if(node is None):
             return overlaps
+
         leftspan = (start, node.val)
         rightspan = (node.val, end)
+
         if(self.isoverlap(leftspan, queryrange)):
-            #print("Overlaps with ", node.data)
             overlaps.extend(node.data)
             if(node.l is not None):
                 overlaps.extend(self._findrange(node.l, start, node.val, queryrange))
 
         if(self.isoverlap(rightspan, queryrange)):
-            #print("Overlaps with ", node.data, node.val)
             overlaps.extend(node.data)
             if(node.r is not None):
                 overlaps.extend(self._findrange(node.r, node.val, end, queryrange))

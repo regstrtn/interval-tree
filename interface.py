@@ -8,7 +8,7 @@ import csv
 from igraph import igraph
 
 
-fbcsv = open("b.csv", "r")
+fbcsv = open(sys.argv[1], "r")
 fbcsv.readline()
 
 #Read csv file after ignoring the first line
@@ -23,30 +23,62 @@ for row in composers:
 	life.append(row[1])
 	data.append(life)
 
-print(data)
-
 #Construct tree
 a = data
 mytree = itree.itree(a)
-mytree.traverse()
-
-#Print composer Overlap
-overlaps = mytree.findrange(1895, 1957)
-print(overlaps)
-
-#Print Songs
-fbcsv.seek(0); fbcsv.readline()
-mytree.findsongs(1895, 1957,composers)
 
 #Output tree dot file
 pgraph.printtree(mytree)
+os.system("dot -Tps mytree.dot -o tree.ps")
 
-#Test igraph module
+#Make interval graph. 
 g = igraph(mytree, a)
 g.printdotfile()
+os.system("dot -Tps myg.dot -o graph.ps")
 
-#Find max overlap
-mytree.maximaloverlap(1700, 1800, data)
+def largestclique():
+	g.getmaxclique()
+
+def largestcc():
+	g.getlcc()
+
+def getsongs():
+	#Print Songs
+	fbcsv.seek(0); fbcsv.readline()
+	s = int(raw_input("Interval start: "))
+	e = int(raw_input("Interval end: "))
+	mytree.findsongs(s,e,composers)
+
+
+def maxoverlap():
+	s = int(raw_input("Interval start: "))
+	e = int(raw_input("Interval end: "))
+	#Find max overlap
+	mytree.maximaloverlap(s,e, data)
+
+def allcomposers():
+	#Print composer Overlap
+	s = int(raw_input("Interval start: "))
+	e = int(raw_input("Interval end: "))
+	overlaps = mytree.findrange(s,e)
+	print(overlaps)
+
+
+while(1):
+	choice = raw_input("\nChoose a function :\n1.Get songs \n2.Find overlapping composers \n3.Find max overlap \n4.LargestTeam\n5.LargestGroup\n6.Exit\n: ")
+	if(choice == "1"):
+		getsongs()
+	elif(choice == "2"):
+		allcomposers()
+	elif(choice == "3"):
+		maxoverlap()
+	elif(choice == "4"):
+		largestclique()
+	elif(choice == "5"):
+		largestcc()
+	elif(choice == "6"):
+		sys.exit(0)
+
 
 '''
 myTree = ngit.intervalTree(a, 0, 1, 1679, 1998)
