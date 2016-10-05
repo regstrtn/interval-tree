@@ -18,6 +18,7 @@ class igraph:
 		self.getlcc()
 
 	def getoverlappingcomposers(self, mytree, composer):
+		#Return all composers overlapping with given composer
 		overlaps = mytree.findrange(composer[0], composer[1])
 		return overlaps
 
@@ -35,6 +36,7 @@ class igraph:
 					self.edgelist.append(edgetuple)
 		
 	def getvertices(self, edgelist):
+		#Get vertices from edgelist
 		v = []
 		for edge in edgelist:
 			v.append(edge[0])
@@ -42,12 +44,14 @@ class igraph:
 		return list(set(v))
 
 	def getallvertices(self, composers):
+		#Return all vertices in the graph
 		v = []
 		for composer in composers:
 			v.append(composer[-1])
 		self.vertexlist = set(v)
 
 	def getmaxclique(self):
+		#Find largest clique in the graph
 		size = len(self._graph.keys())
 		alist = [' C1', ' C2']
 		for i in range(size+1, 1, -1):
@@ -68,8 +72,8 @@ class igraph:
 		pass
 
 	def isclique(self, subgraph):
-		#get list of vertices
-		#check if each edge is present
+		#get a subgraph
+		#check if all possible edges are present. If yes, subgraph is a clique 
 		vlist = subgraph.keys()
 		alledges = self.k_subsets(list(vlist), 2)
 		alltuples = []
@@ -82,6 +86,7 @@ class igraph:
 		return(True)
 	
 	def k_subsets(self, lst, k):
+		#Recursively enumerate all k-size subsets of a given set 
 		if(len(lst)<k):
 			return []
 		if(len(lst) == k):
@@ -92,6 +97,7 @@ class igraph:
 		#return self.k_subsets(lst[1:],k) + map(lambda x:x+[lst[0]],self.k_subsets(lst[1:], k-1))
 
 	def getlcc(self):
+		#Print largest connected component in a graph. Uses self.dfs
 		sizecc = 0
 		cc = []
 		v = set(self.vertexlist)
@@ -108,6 +114,7 @@ class igraph:
 				print("Largest connected component: ",c)
 
 	def dfs(self, start, path = []):
+		#Iterative implementation of DFS
 		q = [start]
 		while q:
 			v = q.pop(0)
@@ -119,6 +126,7 @@ class igraph:
 	
 	def printdotfile(self):
 		'''
+		Print the dot file for graphviz
 		Run this to make graph: dot -Tps myg.dot -o graph1.ps
 		'''	
 		f = open("myg.dot", "w")

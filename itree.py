@@ -2,6 +2,7 @@ from __future__ import print_function
 import os
 import sys
 import pprint
+from collections import defaultdict
 
 class node:
     leaves = 0
@@ -126,9 +127,27 @@ class itree:
         return overlaps
 
     def composeroverlap(self, composer, data):
+        print("Does this ever get called?")
         overlaps = self._findrange(self.root, self.start, self.end, [data[0], data[1]])
         return overlaps
 
+    def overlapsize(self, area1, area2):
+        return(min(area1[1], area2[1]) - max(area1[0], area2[0]))
+
+
+    def maximaloverlap(self, querystart, queryend, data):
+        overlaps = self._findrange(self.root, self.start, self.end, [querystart, queryend])
+        datadict = {}
+        overlapdict = {}
+        for row in data:
+            datadict[row[2]] = [row[0], row[1]]
+        for composer in overlaps:
+            clife = [datadict[composer][0], datadict[composer][1]]
+            querysize = [querystart, queryend]
+            overlapdict[composer] = self.overlapsize(clife, querysize)
+        sortedoverlaps = sorted(overlapdict, key = overlapdict.get, reverse = True)
+        print("Composer with maximal overlap with the interval: ",sortedoverlaps[0], overlapdict[sortedoverlaps[0]])
+        
     def inorder(self, rootnode):
         '''
         inorder traversal of the 
@@ -138,7 +157,8 @@ class itree:
         self.inorder(rootnode.l)
         print(rootnode.val, rootnode.data)
         self.inorder(rootnode.r)
-                
+    
+
     def findsongs(self,querystart, queryend, composers):
         overlaps = self._findrange(self.root, self.start, self.end, [querystart, queryend])
         datadict = {}

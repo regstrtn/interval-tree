@@ -45,6 +45,8 @@ pgraph.printtree(mytree)
 g = igraph(mytree, a)
 g.printdotfile()
 
+#Find max overlap
+mytree.maximaloverlap(1700, 1800, data)
 
 '''
 myTree = ngit.intervalTree(a, 0, 1, 1679, 1998)
