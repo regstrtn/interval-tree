@@ -36,6 +36,12 @@ g = igraph(mytree, a)
 g.printdotfile()
 os.system("dot -Tps myg.dot -o graph.ps")
 
+def insertintotree():
+	s = int(raw_input("Interval start: "))
+	e = int(raw_input("Interval end: "))
+	c = raw_input("Composer name: ")
+	mytree._insertdata(mytree.root, [s,e],c,mytree.start, mytree.end)
+
 def largestclique():
 	g.getmaxclique()
 
@@ -65,7 +71,7 @@ def allcomposers():
 
 
 while(1):
-	choice = raw_input("\nChoose a function :\n1.Get songs \n2.Find overlapping composers \n3.Find max overlap \n4.LargestTeam\n5.LargestGroup\n6.Exit\n: ")
+	choice = raw_input("\nChoose a function :\n1.Get songs \n2.Find overlapping composers \n3.Find max overlap \n4.LargestTeam\n5.LargestGroup\n6.Insert Composer\n7.Exit\n: ")
 	if(choice == "1"):
 		getsongs()
 	elif(choice == "2"):
@@ -77,6 +83,8 @@ while(1):
 	elif(choice == "5"):
 		largestcc()
 	elif(choice == "6"):
+		insertintotree()
+	elif(choice == "7"):
 		sys.exit(0)
 
 

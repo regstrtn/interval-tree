@@ -1,0 +1,23 @@
+Time complexity of operations:
+
+1. Construct Tree: O(nlogn)
+	Where n is the number of elementary intervals
+
+2. Insert into tree: O(n)
+	Worst case is O(n), because in the worst case, the insertion algorithm may end up traversing each node of the tree
+
+3. Interval Overlap: 
+	O(h+k) where h is the height of the tree and k is the number of overlapping composers
+
+4. Find Songs:
+	O(h+k+M) where h is the height of the tree and M is the number of songs
+
+5. Build IGraph: 
+	O(n*(h+k)) #(h+k) could be of O(logn) in best case, or O(n) in worst case
+
+6. Find largest possible team: O(V^2 * 2^V): 
+	Brute force implementation requires checking for each possible subset of V
+	Checking whether a subset is clique requires O(V^2) time
+
+7. Find largest group (connected component): 
+	O(V+E) Applying DFS to find connected component

@@ -118,10 +118,13 @@ class igraph:
 				v.discard(p)
 		sizecc = [len(x) for x in cc]
 		maxsize = max(sizecc)
+		minsize = min(sizecc)
 		#print(self.vertexlist)
 		for c in cc:
 			if(len(c) == maxsize):
 				print("Largest connected component: ",c)
+			elif(len(c) == minsize):
+				print("Smallest connected component: ", c)
 
 	def dfs(self, start, path = []):
 		#Iterative implementation of DFS
