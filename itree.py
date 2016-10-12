@@ -23,6 +23,10 @@ class node:
         self.data.append(data)
 
 class itree:
+    '''
+    Input parameter data will be a list of lists, of the form 
+    [[start, end, label], [start, end,label],......]
+    '''
     def __init__(self, data):
         self.intervals = self.getintervals(data)
         self.start = 0
@@ -40,16 +44,19 @@ class itree:
         return intervallist
     
     def ptininterval(self, pt, interval):
+        #Check if a point is within a given interval
         if(pt>=interval[0] and pt<=interval[1]):
             return 1
         return 0
 
     def spanininterval(self, nodespan, labelinterval):
+        #Check whether the span of a tree node is fully contained within an interval
         if self.ptininterval(nodespan[0], labelinterval) and self.ptininterval(nodespan[1], labelinterval):
             return 1
         return 0
 
     def isoverlap(self, nodespan, labelinterval):
+        #Check if two intervals overlap
         if self.ptininterval(nodespan[0], labelinterval) or self.ptininterval(nodespan[1], labelinterval) or self.ptininterval(labelinterval[0], nodespan) or self.ptininterval(labelinterval[1], nodespan):            
             return 1
         return 0
@@ -106,6 +113,7 @@ class itree:
         return n
     
     def _findrange(self, node, start, end, queryrange):
+        #Return all nodes overlapping with a query interval
         if(queryrange[0]<self.start or queryrange[1]>self.end):
             print("Interval out of range")
             return
@@ -131,11 +139,12 @@ class itree:
 
 
     def findrange(self, querystart, queryend):
+        #Return all nodes overlapping with a query interval. Calls _findrange function.
         overlaps = self._findrange(self.root, self.start, self.end, [querystart, queryend])
         return overlaps
 
     def composeroverlap(self, composer, data):
-        print("Does this ever get called?")
+        #Can delete this function, never gets used
         overlaps = self._findrange(self.root, self.start, self.end, [data[0], data[1]])
         return overlaps
 
@@ -158,7 +167,7 @@ class itree:
         
     def inorder(self, rootnode):
         '''
-        inorder traversal of the 
+        Inorder traversal of the interval tree
         '''
         if(rootnode is None):
             return
@@ -181,4 +190,5 @@ class itree:
 
 
     def traverse(self):
+        #Print intervals in sorted order
         self.inorder(self.root)
