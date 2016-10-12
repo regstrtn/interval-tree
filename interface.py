@@ -8,7 +8,7 @@ import csv
 from igraph import igraph
 
 
-fbcsv = open(sys.argv[1], "r")
+fbcsv = open(sys.argv[1], "r")  #Program takes as argument a csv file containing data
 fbcsv.readline()
 
 #Read csv file after ignoring the first line
@@ -28,12 +28,12 @@ a = data
 mytree = itree.itree(a)
 
 #Output tree dot file
-pgraph.printtree(mytree)
-os.system("dot -Tps mytree.dot -o tree.ps")
+pgraph.printtree(mytree)  #Generate dot file for displaying by graphviz
+os.system("dot -Tps mytree.dot -o tree.ps") #Generate a .ps file from .dot file. Can be opened using an image viewer or pdf reader
 
 #Make interval graph. 
 g = igraph(mytree, a)
-g.printdotfile()
+g.printdotfile()   #Generate dot file for displaying by graphviz
 os.system("dot -Tps myg.dot -o graph.ps")
 
 def insertintotree():
