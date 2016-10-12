@@ -1,4 +1,4 @@
-# interval-tree
+# Interval Tree
 Interval Tree
 This is an implementation of an interval tree in python. There's an excellent tutorial on Interval trees in the links mentioned at the end of this page. An excerpt from Wikipedia is included below.
 
@@ -17,4 +17,5 @@ An interval tree is a tree data structure to hold intervals. It allows one to ef
 With inputs from the following blog:
 
 Resources: http://blog.nextgenetics.net/?e=45
+
 Toronto Link: http://www.dgp.utoronto.ca/people/JamesStewart/378notes/22intervals/
